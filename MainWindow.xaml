@@ -1,0 +1,136 @@
+﻿<Window x:Class="WpfAppSchoolDataBase.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppSchoolDataBase"
+        xmlns:vm="clr-namespace:WpfAppSchoolDataBase.ViewModels"
+        mc:Ignorable="d"
+        Title="School Administration Dashboard" Height="650" Width="1050">
+
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <!-- Modern Grid Header Layout Theme Style -->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <!-- Form TextBox Style -->
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <!-- Sidebar Navigation Menu -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main Data Operations Content Area -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Sidebar Section Dashboard Canvas -->
+        <Grid Background="#1E293B" Grid.Column="0">
+            <StackPanel Margin="20,30,20,0">
+                <TextBlock Text="SchoolDB Admin" Foreground="White" FontSize="20" FontWeight="Bold" Margin="0,0,0,30"/>
+                <Button Content="Admission System" Background="#334155" Foreground="White" Padding="12" Margin="0,0,0,10" BorderThickness="0" HorizontalContentAlignment="Left" FontWeight="Medium"/>
+                <Button Content="Course Master Catalog" Background="Transparent" Foreground="#94A3B8" Padding="12" BorderThickness="0" HorizontalContentAlignment="Left" FontWeight="Medium"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Right Core Operations Board Area -->
+        <Grid Grid.Column="1" Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Title Header Row Banner -->
+                <RowDefinition Height="2*"/>
+                <!-- Data Grid Tables Matrix -->
+                <RowDefinition Height="1.5*"/>
+                <!-- Form Editor / Bound Details Panel -->
+            </Grid.RowDefinitions>
+
+            <!-- Top Welcome Banner Frame -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="Student Admissions Portal" FontSize="26" FontWeight="Bold" Foreground="#111827"/>
+                <TextBlock Text="Manage upcoming applications and assign programs below." FontSize="13" Foreground="#6B7280" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- Central Data Visualizer Grid View Matrix Component -->
+            <Grid Grid.Row="1" Margin="0,0,0,15">
+                <DataGrid ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" 
+                          AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                          Background="White" BorderBrush="#E5E7EB" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#E5E7EB">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding StudentID}" Width="50"/>
+                        <DataGridTextColumn Header="Full Applicant Name" Binding="{Binding FullName}" Width="2*"/>
+                        <DataGridTextColumn Header="Electronic Email Address" Binding="{Binding Email}" Width="2*"/>
+                        <DataGridTextColumn Header="Entrance GPA" Binding="{Binding GPA}" Width="1*"/>
+                        <DataGridTextColumn Header="Assigned Course Code" Binding="{Binding CourseID}" Width="1*"/>
+                        <DataGridTextColumn Header="Application Review Status" Binding="{Binding ApplicationStatus}" Width="1.2*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <!-- Bottom Live Action Detail Data Editor Form Block Wrapper -->
+            <Border Grid.Row="2" Background="White" CornerRadius="6" BorderBrush="#E5E7EB" BorderThickness="1" Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Selected Application Profile Details File" Grid.Row="0" FontSize="16" FontWeight="Bold" Foreground="#1F2937" Margin="0,0,0,15"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Form Data Input Fields Left Segment Columns -->
+                        <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                            <TextBlock Text="Applicant Legal Name" FontWeight="Medium" Margin="0,0,0,5" Foreground="#4B5563"/>
+                            <TextBox Text="{Binding SelectedStudent.FullName, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+
+                        <!-- Form Data Input Fields Center Segment Columns -->
+                        <StackPanel Grid.Column="1" Margin="0,0,15,0">
+                            <TextBlock Text="Contact Email ID" FontWeight="Medium" Margin="0,0,0,5" Foreground="#4B5563"/>
+                            <TextBox Text="{Binding SelectedStudent.Email, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+
+                        <!-- Form Data Input Fields Right Control Buttons Set Panel Rows -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Application State" FontWeight="Medium" Margin="0,0,0,5" Foreground="#4B5563"/>
+                            <TextBox Text="{Binding SelectedStudent.ApplicationStatus, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <!-- Trigger Command Button Assets Panels -->
+                            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
+                                <Button Content="Reject Application" Background="#EF4444" Foreground="White" Padding="15,7" BorderThickness="0" Margin="0,0,10,0" FontWeight="Medium"/>
+                                <Button Content="Approve Admission" Background="#10B981" Foreground="White" Padding="15,7" BorderThickness="0" FontWeight="Medium"/>
+                            </StackPanel>-->
+                            <!-- Fixed: Uses a UniformGrid with balanced auto-spacing to prevent visual clipping -->
+                            <UniformGrid Columns="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,15,0,0">
+                                <Button Content="Reject Application" Background="#EF4444" Foreground="White" 
+                                        Padding="12,8" Margin="0,0,10,0" FontWeight="Medium" BorderThickness="0"/>
+                                <Button Content="Approve Admission" Background="#10B981" Foreground="White" 
+                                        Padding="12,8" Margin="0,0,0,0" FontWeight="Medium" BorderThickness="0"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
