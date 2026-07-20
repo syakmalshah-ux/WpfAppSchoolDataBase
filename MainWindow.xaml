@@ -3,8 +3,8 @@
     This chunk forms the outer shell of your user interface and configures 
     the connection paths for your ViewModels and the Attached Property Placeholder helper.
     -->
-    
-    <Window x:Class="WpfAppSchoolDataBase.MainWindow"
+
+<Window x:Class="WpfAppSchoolDataBase.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,11 +19,10 @@
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
-    
-    <!-- The Resources Section (Styles and Placeholders) 
-    This chunk defines how your text boxes behave. 
-    It houses the custom template that displays formatting hints 
-    when a user has not typed anything into an input field.
+
+    <!-- TChunk X2: UI Layout Themes and Placeholder Control Templates 
+        This block sets up the style rules for the data table and 
+        builds the custom control overlay template that handles the text box placeholder watermarks natively in XAML.
     -->
     <Window.Resources>
         <!-- Blue Theme Header Design for the Data Table -->
@@ -35,7 +34,7 @@
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
 
-        <!-- Microsoft Learn Template: Controls Floating/Fading Form Placeholders -->
+        <!-- Microsoft Learn Attached Property Style Template for Input Text Placeholders -->
         <Style TargetType="TextBox">
             <Setter Property="Padding" Value="6,4"/>
             <Setter Property="Margin" Value="0,0,0,12"/>
@@ -73,133 +72,105 @@
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
     </Window.Resources>
-    <!-- Outer Structure and Left Sidebar 
-    This segment sets up the column/row layout grid partitions for the dashboard canvas and 
-    draws the professional dark-colored menu column on the left side of the window.
+
+    <!-- Chunk X3: Main Grid Grid Framework Matrix and Sidebar Panel 
+        This segment implements your grid matrix: 
+        two rows and two columns. 
+        Column 0 stretches fully down the entire vertical height of your app via 
+        Grid.RowSpan="2" to hold the navigation bar
     -->
+    <!-- The Root Main Grid Control Framework containing 2 Rows and 2 Columns -->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
-            <!-- Left Menu Column -->
+            <!-- Column 0: Sidebar Navigation Menu Column -->
             <ColumnDefinition Width="*"/>
-            <!-- Right Operations Board -->
+            <!-- Column 1: Core Content Workspace Area Panels -->
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="380"/>
+            <!-- Row 0: Rigid space layout cell for the Header & DataGrid -->
+            <RowDefinition Height="*"/>
+            <!-- Row 1: Flexible space layout cell for the entry form card -->
+        </Grid.RowDefinitions>
 
-        <!-- Sidebar Grid Background Frame -->
-        <Grid Background="#1E293B" Grid.Column="0">
+        <!-- Column 0 Spans Over Both Rows for the Left Navigation Sidebar Look -->
+        <Grid Background="#1E293B" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
             <StackPanel Margin="20,30,20,0">
                 <TextBlock Text="SchoolDB Admin" Foreground="White" FontSize="20" FontWeight="Bold" Margin="0,0,0,30"/>
                 <Button Content="Admission Board" Background="#334155" Foreground="White" Padding="12" Margin="0,0,0,10" BorderThickness="0" HorizontalContentAlignment="Left" FontWeight="Medium"/>
             </StackPanel>
         </Grid>
 
-        <!-- Right Main Workspace Header and Action Toolbar Strip 
-        This component sets up the workspace area rows on the right and 
-        populates the top with title descriptions alongside your Create Blank Record and 
-        Delete Selected utility buttons.
+
+        <!-- Chunk X4: Row 0, Column 1 — Header, Buttons, and DataGrid Map 
+            This component fills Row 0, Column 1. 
+            Because this row is strictly capped inside the main window grid definitions, 
+        the DataGrid is forced to handle overflow by activating its own internal scrollbars natively.xml
         -->
-        <!-- The following code generated a fixed view in which the bottom button were not visible.
-        <Grid Grid.Column="1" Margin="25">
-    <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/> -->
-        <!-- Title Description -->
-        <!-- <RowDefinition Height="Auto"/> -->
-        <!-- Toolbar Buttons -->
-        <!-- <RowDefinition Height="1.5*"/> -->
-        <!-- Data Matrix Table Grid -->
-        <!-- <RowDefinition Height="2.5*"/> -->
-        <!-- Profile Editing Form Sheet -->
-        <!-- </Grid.RowDefinitions> -->
-        
-            <!-- Core Control Area -->
-        <!-- Right Core Operations Content Workspace - Upgraded with ScrollBox Wrapper -->
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <Grid Grid.Column ="1" Margin="25">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <!-- Welcome Header Row -->
-                    <RowDefinition Height="Auto"/>
-                    <!-- CRUD Action Utility Strip Bar -->
-                    <RowDefinition Height="300"/>
-                    <!-- Fixed: Data Grid Matrix Board height -->
-                    <RowDefinition Height="*"/>
-                    <!-- Fixed: Dynamic Form fits content automatically -->
-                </Grid.RowDefinitions>
-                <!--
-                Note: Changing row heights to 300 and Auto 
-                stabilizes the content dimensions, preventing WPF from squishing your inputs or 
-                rendering buttons out of bounds).
-                -->
-                <!-- Workspace Welcome Title Row 0 -->
-            <StackPanel Grid.Row="0" Margin="0,0,0,15">
-                <TextBlock Text="Student Admissions Portal" FontSize="26" FontWeight="Bold" Foreground="#111827"/>
-                <TextBlock Text="Complete form textboxes using proper data formats before saving records." FontSize="13" Foreground="#6B7280" Margin="0,2,0,0"/>
+        <!-- Row 0, Column 1: Contains the Header, Action Buttons, and Full DataGrid -->
+        <Grid Grid.Row="0" Grid.Column="1" Margin="25,25,25,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Title Header Row -->
+                <RowDefinition Height="Auto"/>
+                <!-- Utility Button Row -->
+                <RowDefinition Height="*"/>
+                <!-- Fills the remaining room inside Row 0 -->
+            </Grid.RowDefinitions>
+
+            <!-- Title Header Summary Text -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                <TextBlock Text="Student Admissions Portal" FontSize="24" FontWeight="Bold" Foreground="#111827"/>
+                <TextBlock Text="Select rows inside the table grid layout below to view or manage applicant profiles." FontSize="12" Foreground="#6B7280"/>
             </StackPanel>
 
-            <!-- Core Operations Toolbar Strip Row 1 -->
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
-                <Button Content="+ Create Blank Application Record" Command="{Binding NewStudentCommand}" Background="#2563EB" Foreground="White" Padding="15,8" FontWeight="Medium" BorderThickness="0" Margin="0,0,10,0"/>
-                <Button Content="🗑 Delete Selected" Command="{Binding DeleteStudentCommand}" Background="#DC2626" Foreground="White" Padding="15,8" FontWeight="Medium" BorderThickness="0"/>
+            <!-- CRUD Utility Actions Toolbar -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+                <Button Content="+ Create Blank Application Record" Command="{Binding NewStudentCommand}" Background="#2563EB" Foreground="White" Padding="12,6" FontWeight="Medium" BorderThickness="0" Margin="0,0,10,0"/>
+                <Button Content="🗑 Delete Selected" Command="{Binding DeleteStudentCommand}" Background="#DC2626" Foreground="White" Padding="12,6" FontWeight="Medium" BorderThickness="0"/>
             </StackPanel>
 
-            <!-- The Table Matrix Viewer (DataGrid) 
-            This chunk draws the tabular grid map in Row 2, 
-            linking row selection variables directly to your data backend tracking arrays.
+            <!-- Core Scrollable Data Matrix Component Viewer -->
+            <DataGrid Grid.Row="2" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" 
+                      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                      Background="White" BorderBrush="#E5E7EB" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#E5E7EB"
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding StudentID}" Width="50"/>
+                    <DataGridTextColumn Header="Full Applicant Name" Binding="{Binding FullName}" Width="160"/>
+                    <DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="80"/>
+                    <DataGridTextColumn Header="Date of Birth" Binding="{Binding DateOfBirth}" Width="100"/>
+                    <DataGridTextColumn Header="Electronic Email" Binding="{Binding Email}" Width="180"/>
+                    <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNum}" Width="120"/>
+                    <DataGridTextColumn Header="Street Address" Binding="{Binding StreetAddress}" Width="180"/>
+                    <DataGridTextColumn Header="City" Binding="{Binding City}" Width="100"/>
+                    <DataGridTextColumn Header="State / Prov" Binding="{Binding StateProvince}" Width="90"/>
+                    <DataGridTextColumn Header="Postal Code" Binding="{Binding PostalCode}" Width="90"/>
+                    <DataGridTextColumn Header="Previous Institution" Binding="{Binding PrevSchoolName}" Width="160"/>
+                    <DataGridTextColumn Header="GPA" Binding="{Binding Gpa}" Width="60"/>
+                    <DataGridTextColumn Header="Grad Year" Binding="{Binding GraduationYear}" Width="80"/>
+                    <DataGridTextColumn Header="Major ID" Binding="{Binding CourseID}" Width="80"/>
+                    <DataGridTextColumn Header="Application Status" Binding="{Binding ApplicationStatus}" Width="120"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <!-- Chunk X5: Row 1, Column 1 — Localized Form ScrollViewer and Form Card 
+            This chunk builds Row 1, Column 1. 
+            It restricts the ScrollViewer container exclusively to the bottom right segment, 
+            keeping the form text boxes accessible on compact 14-inch screen resolutions.
             -->
-            <!-- Interactive DataGrid Matrix Row 2 -->
-            <Grid Grid.Row="2" Margin="0,0,0,15">
-                <DataGrid ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" 
-                          AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                          Background="White" BorderBrush="#E5E7EB" GridLinesVisibility="Horizontal" 
-                          HorizontalGridLinesBrush="#E5E7EB" MaxHeight="300" HorizontalAlignment="Stretch" 
-                          HorizontalScrollBarVisibility="Auto"
-                          VerticalScrollBarVisibility="Auto">
-                    <DataGrid.Columns>
-                        <!-- Assigned explicit pixel widths to prevent columns from squeezing -->
-                            <!-- Personal Profile Coordinates -->
-                            <DataGridTextColumn Header="ID" Binding="{Binding StudentID}" Width="50"/>
-                            <DataGridTextColumn Header="Full Applicant Name" Binding="{Binding FullName}" Width="160"/>
-                            <DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="80"/>
-                            <DataGridTextColumn Header="Date of Birth" Binding="{Binding DateOfBirth}" Width="100"/>
-                            <DataGridTextColumn Header="Electronic Email" Binding="{Binding Email}" Width="180"/>
-                            <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNum}" Width="120"/>
-
-                            <!-- Physical Mailing Address Coordinates -->
-                            <DataGridTextColumn Header="Street Address" Binding="{Binding StreetAddress}" Width="180"/>
-                            <DataGridTextColumn Header="City" Binding="{Binding City}" Width="100"/>
-                            <DataGridTextColumn Header="State / Prov" Binding="{Binding StateProvince}" Width="90"/>
-                            <DataGridTextColumn Header="Postal Code" Binding="{Binding PostalCode}" Width="90"/>
-
-                            <!-- Prior Academic History Coordinates -->
-                            <DataGridTextColumn Header="Previous Institution" Binding="{Binding PrevSchoolName}" Width="160"/>
-                            <DataGridTextColumn Header="GPA" Binding="{Binding Gpa}" Width="60"/>
-                            <DataGridTextColumn Header="Grad Year" Binding="{Binding GraduationYear}" Width="80"/>
-
-                            <!-- Registration Program Profile Coordinates -->
-                            <DataGridTextColumn Header="Major ID" Binding="{Binding CourseID}" Width="80"/>
-                            <DataGridTextColumn Header="Application Status" Binding="{Binding ApplicationStatus}" Width="120"/>
-
-                        </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-
-            <!-- Profile Input Sheet Card — Form Column 1 (Personal Data) 
-            This block constructs the beginning of your 
-            profile property input editor panel card located at the bottom of your app screen inside Row 3, 
-            providing form inputs for name, gender, birthdate, email, and phone.
-            -->
-            <!-- Profile Properties Card Panel Row 3 -->
-            <Border Grid.Row="3" Background="White" CornerRadius="6" BorderBrush="#E5E7EB" BorderThickness="1" Padding="15">
+        <!-- Row 1, Column 1: Houses ONLY the Data Entry Form Card inside its own Local ScrollViewer -->
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="25,15,25,25">
+            <Border Background="White" CornerRadius="6" BorderBrush="#E5E7EB" BorderThickness="1" Padding="15">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Student Profile Form Properties Editor" Grid.Row="0" FontSize="16" FontWeight="Bold" Foreground="#1F2937" Margin="0,0,0,10"/>
+                    <TextBlock Text="Student Profile Form Properties Editor" Grid.Row="0" FontSize="15" FontWeight="Bold" Foreground="#1F2937" Margin="0,0,0,10"/>
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -208,7 +179,12 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- PROFILE COLUMN 1: Personal Identification Fields -->
+                        <!-- Chunk X6: Form Inputs Column 1 (Personal Data Mapping) 
+                        This block builds out the first field column layout map for 
+                        the data entry form card sheet, binding name, gender, birthday, 
+                        email, and phone info fields.
+                        -->
+                        <!-- FORM COLUMN 1: Personal Identification Fields -->
                         <StackPanel Grid.Column="0" Margin="0,0,15,0">
                             <TextBlock Text="Full Legal Name" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
                             <TextBox Text="{Binding SelectedStudent.FullName, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="e.g. Johnathan Doe"/>
@@ -226,11 +202,12 @@
                             <TextBox Text="{Binding SelectedStudent.PhoneNum, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="555-0199 or +1-555-0199"/>
                         </StackPanel>
 
-                        <!-- Profile Input Sheet Card — Form Column 2 (Address & Dropdown) 
-                        This block builds the middle row section of your data management panel, 
-                        housing your address text boxes and the Dynamic Course ComboBox Dropdown menu.
+
+                        <!-- Chunk X7: Form Inputs Column 2 (Address Mapping and Course Dropdown) 
+                        This segment draws the middle text fields panel area along with the 
+                        dynamic data-bound course master lookup dropdown menu.
                         -->
-                        <!-- PROFILE COLUMN 2: Mailing Address Information & Course Selection -->
+                        <!-- FORM COLUMN 2: Mailing Address Information & Major Dropdown Selection -->
                         <StackPanel Grid.Column="1" Margin="0,0,15,0">
                             <TextBlock Text="Street Address" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
                             <TextBox Text="{Binding SelectedStudent.StreetAddress, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="e.g. 123 Maple Avenue"/>
@@ -249,13 +226,11 @@
                             <ComboBox ItemsSource="{Binding Courses}" DisplayMemberPath="CourseName" SelectedValuePath="CourseID" 
                                       SelectedValue="{Binding SelectedStudent.CourseID, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
-
-                        <!-- Profile Input Sheet Card — Form Column 3 and Closing Window Tags 
-                        This final XAML block lays out the third form segment containing school history, 
-                        application review state fields, and 
-                        the action panel containing your Save Changes, Approve, and Reject buttons.
+                        <!-- Chunk X8: Form Inputs Column 3, Actions Buttons, and Document End
+                        This final block completes the rightmost layout layer containing 
+                        school history data entry text boxes and the system action processing button items.
                         -->
-                        <!-- PROFILE COLUMN 3: Academic History & Control Pipeline Action Buttons -->
+                        <!-- FORM COLUMN 3: Academic Background & Control Operation Actions Buttons -->
                         <StackPanel Grid.Column="2" VerticalAlignment="Stretch">
                             <TextBlock Text="Previous School Name" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
                             <TextBox Text="{Binding SelectedStudent.PrevSchoolName, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="e.g. West High School"/>
@@ -269,18 +244,68 @@
                             <TextBlock Text="Application Profile Status" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
                             <TextBox Text="{Binding SelectedStudent.ApplicationStatus}" IsReadOnly="True" Background="#F3F4F6"/>
 
-                            <!-- Master Operations Action Pipeline Button Sets -->
-                            <Button Content="💾 Apply General Value Updates" Command="{Binding SaveStudentChangesCommand}" Background="#4B5563" Foreground="White" Padding="10,6" BorderThickness="0" Margin="0,5,0,15" FontWeight="Medium"/>
+                            <!-- Master Action Pipeline Save/Approve Buttons -->
+                            <!-- Styled Apply General Value Updates Button Component -->
+                            <Button Content="💾 Save a New Record or Updates an Existing Record" Command="{Binding SaveStudentChangesCommand}" Padding="10,6" Margin="0,5,0,15" FontWeight="Medium" BorderThickness="0">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#4B5563"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Background" Value="#E5E7EB"/>
+                                                <Setter Property="Foreground" Value="#9CA3AF"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <!-- Workflow Status Header Divider Label -->
+                            <TextBlock Text="Change Application Status Workflow" 
+                                       FontWeight="Medium" FontSize="11" Margin="0,5,0,5" Foreground="#6B7280"/>
 
                             <UniformGrid Columns="2">
-                                <Button Content="Reject File" Command="{Binding RejectCommand}" Background="#EF4444" Foreground="White" Padding="10,6" BorderThickness="0" Margin="0,0,5,0" FontWeight="Medium"/>
-                                <Button Content="Approve Entry" Command="{Binding ApproveCommand}" Background="#10B981" Foreground="White" Padding="10,6" BorderThickness="0" FontWeight="Medium"/>
+                                <!-- Styled Reject File Button Component -->
+                                <Button Content="Reject Status" Command="{Binding RejectCommand}" Padding="10,6" BorderThickness="0" Margin="0,0,5,0" FontWeight="Medium">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#EF4444"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="#E5E7EB"/>
+                                                    <Setter Property="Foreground" Value="#9CA3AF"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <!-- Styled Approve Entry Button Component -->
+                                <Button Content="Approve Status" Command="{Binding ApproveCommand}" Padding="10,6" BorderThickness="0" FontWeight="Medium">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#10B981"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="#E5E7EB"/>
+                                                    <Setter Property="Foreground" Value="#9CA3AF"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                             </UniformGrid>
+
                         </StackPanel>
                     </Grid>
+                    <!-- Closes 3-Column Input Form Sub-Grid -->
                 </Grid>
+                <!-- Closes Card Panel Inner Grid -->
             </Border>
-        </Grid> <!-- Closes Inner Row/Column Main Control Panel Workspace Grid -->
-        </ScrollViewer> <!-- Closes Outer ScrollViewer Box Framework Layer -->
-    </Grid> <!-- Closes Outer Root Window Main Workspace Master Application Grid Frame -->
+            <!-- Closes White Card Form Canvas Border Panel -->
+        </ScrollViewer>
+        <!-- Closes Localized Form ScrollViewer Layer Container -->
+    </Grid>
+    <!-- Closes Outer Root Window Layout Grid Control Framework Matrix -->
 </Window>
