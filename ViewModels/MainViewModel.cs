@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel; // Enables modern UI notifications
 using WpfAppSchoolDataBase.Models; // Points to your newly generated EF Core folder
 using System.Collections.ObjectModel;
-using Microsoft.EntityFrameworkCore; // EF Core database context
 
 using System.Linq;
 
