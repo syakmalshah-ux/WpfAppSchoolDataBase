@@ -1,9 +1,21 @@
 # WpfAppSchoolDataBase
-# 🏫 Full-Stack WPF School Admission & Database Management System
+# 🏫 Full-Stack WPF School Admission & Database Management System (.NET 10 & C# 14)
 
 Welcome to the **WPF School Database Administration Dashboard**! This open-source repository is specifically designed as a step-by-step learning guide for students and developers who want to master **WPF (Windows Presentation Foundation)**, **MVVM architecture**, and **Entity Framework Core** with **SQL Server Express (LocalDB)**.
 
 This project features a clean, responsive layout optimized for 14-inch laptop screens, robust pre-save validation rules to handle unique constraints safely, and data-bound textboxes using a modern Microsoft Learn-inspired attached property placeholder engine.
+
+This project stands out by utilizing **Visual Studio 2026**, **.NET 10 (LTS)**, **C# 14**, and **SQL Server 2026/SSMS 22** systems to deliver an optimized modern full-stack implementation. 
+
+While the internet is filled with old, legacy code from a decade ago, this repository serves as a modern learning guide demonstrating how to build enterprise desktop applications using the newest toolsets provided by Microsoft.
+
+---
+
+## ⚡ Modern Tech Stack & Language Features Applied
+
+* **Target Framework**: Built natively using **.NET 10.0-windows** alongside **Entity Framework Core 10**.
+* **C# 14 `field` Keyword**: Eliminated verbose boilerplate backing properties by utilizing C# 14's modern **`field` keyword** inside ViewModels to handle data-binding property notifications cleanly.
+* **Modern Development Environments**: Developed entirely inside **Visual Studio 2026** and verified utilizing **SQL Server Management Studio 22 (SSMS)**.
 
 ---
 

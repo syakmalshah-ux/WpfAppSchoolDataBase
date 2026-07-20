@@ -17,20 +17,19 @@ namespace WpfAppSchoolDataBase.ViewModels
     // ObservableObject enables the automatic modern data binding notifications
     public partial class MainViewModel : ObservableObject
     {
-        private StudentAdmission? _selectedStudent;
-
+        
         // ObservableCollections tell the DataGrid to automatically refresh on updates
         public ObservableCollection<Course> Courses { get; set; } = new();
         public ObservableCollection<StudentAdmission> Students { get; set; } = new();
 
+        // MODERN C# 14 WAY: Delete the private '_selectedStudent' variable completely!
         public StudentAdmission? SelectedStudent
         {
-            get => _selectedStudent;
+            get => field; // C# 14 compiler auto-synthesizes the internal backing storage path
             set
             {
-                if (SetProperty(ref _selectedStudent, value))
+                if (SetProperty(ref field, value)) // Uses C# 14 field token cleanly
                 {
-                    // Refresh button validation states when a new row is selected
                     ApproveCommand.NotifyCanExecuteChanged();
                     RejectCommand.NotifyCanExecuteChanged();
                     DeleteStudentCommand.NotifyCanExecuteChanged();

@@ -97,7 +97,7 @@
         <!-- Column 0 Spans Over Both Rows for the Left Navigation Sidebar Look -->
         <Grid Background="#1E293B" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
             <StackPanel Margin="20,30,20,0">
-                <TextBlock Text="SchoolDB Admin" Foreground="White" FontSize="20" FontWeight="Bold" Margin="0,0,0,30"/>
+                <TextBlock Text="Syed Public School" Foreground="White" FontSize="20" FontWeight="Bold" Margin="0,0,0,30"/>
                 <Button Content="Admission Board" Background="#334155" Foreground="White" Padding="12" Margin="0,0,0,10" BorderThickness="0" HorizontalContentAlignment="Left" FontWeight="Medium"/>
             </StackPanel>
         </Grid>
