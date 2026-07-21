@@ -17,7 +17,38 @@ namespace WpfAppSchoolDataBase.ViewModels
     // ObservableObject enables the automatic modern data binding notifications
     public partial class MainViewModel : ObservableObject
     {
-        
+        // C# 14 field backing property tracks the active screen view context dynamically
+        public ViewModelBase CurrentView
+        {
+            get => field;
+            set => SetProperty(ref field, value);
+        }
+
+        // Fixed: A single unified constructor initializing both systems simultaneously
+        public MainViewModel()
+        {
+            // 1. Set up your C# 14 active page display navigation view
+            CurrentView = new WelcomeViewModel();
+
+            // 2. Clear and load your SQL Express data tables arrays natively
+            LoadDataFromDatabase();
+        }
+
+
+        // Navigation Commands mapped to sidebar buttons
+        [RelayCommand]
+        private void NavigateToWelcome() => CurrentView = new WelcomeViewModel();
+
+        [RelayCommand]
+        private void NavigateToNewAdmission()
+        {
+            // Dynamically injects context configuration properties down to the sub-panel view model
+            CurrentView = new NewAdmissionViewModel(GetDbOptions());
+        }
+
+        // Note: Keep your existing database collection tracking arrays and 
+        // options context logic beneath this block
+
         // ObservableCollections tell the DataGrid to automatically refresh on updates
         public ObservableCollection<Course> Courses { get; set; } = new();
         public ObservableCollection<StudentAdmission> Students { get; set; } = new();
@@ -36,17 +67,6 @@ namespace WpfAppSchoolDataBase.ViewModels
                     SaveStudentChangesCommand.NotifyCanExecuteChanged();
                 }
             }
-        }
-
-        /*
-         * Chunk C2: The Constructor and DB Options Configuration:
-         * This chunk instantiates the View Model when the app starts and 
-         * defines your encrypted database connection parameters targeting 
-         * your specific (localdb)\ProjectModels server instance.
-         */
-        public MainViewModel()
-        {
-            LoadDataFromDatabase();
         }
 
         // Shared helper method to safely provide SQL Server connection strings
