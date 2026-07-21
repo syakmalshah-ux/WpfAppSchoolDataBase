@@ -12,9 +12,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\sps_logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="FastReport.WPF.Demo" Version="2026.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.26" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\sps_logo.png" />
   </ItemGroup>
 
 </Project>

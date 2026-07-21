@@ -11,301 +11,75 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAppSchoolDataBase"
         xmlns:vm="clr-namespace:WpfAppSchoolDataBase.ViewModels"
-        xmlns:h="clr-namespace:WpfAppSchoolDataBase.Helper"
+        xmlns:v="clr-namespace:WpfAppSchoolDataBase.Views"
         mc:Ignorable="d"
-        Title="School Administration Dashboard" Height="700" Width="1150"
-        Background="#F3F4F6" WindowStartupLocation="CenterScreen">
+        Title="SYED Public School ERP System"
+        Background="#F3F4F6" WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        WindowState="Maximized" 
+        ResizeMode="NoResize">
 
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
-
-    <!-- TChunk X2: UI Layout Themes and Placeholder Control Templates 
-        This block sets up the style rules for the data table and 
-        builds the custom control overlay template that handles the text box placeholder watermarks natively in XAML.
-    -->
     <Window.Resources>
-        <!-- Blue Theme Header Design for the Data Table -->
-        <Style TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#2563EB"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="10,6"/>
+        <!-- CRUCIAL DICTIONARY MAP: Links business views to visual user panels dynamically -->
+        <DataTemplate DataType="{x:Type vm:WelcomeViewModel}">
+            <v:WelcomeView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:NewAdmissionViewModel}">
+            <v:NewAdmissionView />
+        </DataTemplate>
+
+        <!-- Standard Button Visual Styling Scheme Rules -->
+        <Style x:Key="SidebarMenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="Padding" Value="15,12"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
             <Setter Property="BorderThickness" Value="0"/>
-        </Style>
-
-        <!-- Microsoft Learn Attached Property Style Template for Input Text Placeholders -->
-        <Style TargetType="TextBox">
-            <Setter Property="Padding" Value="6,4"/>
-            <Setter Property="Margin" Value="0,0,0,12"/>
-            <Setter Property="BorderBrush" Value="#D1D5DB"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Grid>
-                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
-                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                            </Border>
-                            <!-- Watermark Layer Overlay Trigger -->
-                            <TextBlock x:Name="placeholderText" Text="{Binding Path=(h:WatermarkService.Watermark), RelativeSource={RelativeSource TemplatedParent}}"
-                                       Foreground="#9CA3AF" Style="{x:Null}" Margin="10,5,0,0" IsHitTestVisible="False" Visibility="Collapsed"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="Text" Value="">
-                                <Setter TargetName="placeholderText" Property="Visibility" Value="Visible"/>
-                            </Trigger>
-                            <Trigger Property="Text" Value="{x:Null}">
-                                <Setter TargetName="placeholderText" Property="Visibility" Value="Visible"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style TargetType="ComboBox">
-            <Setter Property="Padding" Value="6,4"/>
-            <Setter Property="Margin" Value="0,0,0,12"/>
-            <Setter Property="BorderBrush" Value="#D1D5DB"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#334155"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
 
-    <!-- Chunk X3: Main Grid Grid Framework Matrix and Sidebar Panel 
-        This segment implements your grid matrix: 
-        two rows and two columns. 
-        Column 0 stretches fully down the entire vertical height of your app via 
-        Grid.RowSpan="2" to hold the navigation bar
-    -->
-    <!-- The Root Main Grid Control Framework containing 2 Rows and 2 Columns -->
+    <!-- Blueprint Grid: 2 rows, 2 columns. Column 0 Spans 2 Rows for the Left Menu UI -->
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
-            <!-- Column 0: Sidebar Navigation Menu Column -->
+            <ColumnDefinition Width="240"/>
+            <!-- Column 0: Fixed Sidebar -->
             <ColumnDefinition Width="*"/>
-            <!-- Column 1: Core Content Workspace Area Panels -->
+            <!-- Column 1: Workspace Panel Display Viewport Cell -->
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="380"/>
-            <!-- Row 0: Rigid space layout cell for the Header & DataGrid -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 0: Top Status Title Bar Frame (Optional) -->
             <RowDefinition Height="*"/>
-            <!-- Row 1: Flexible space layout cell for the entry form card -->
+            <!-- Row 1: Workspace View Frame Core -->
         </Grid.RowDefinitions>
 
-        <!-- Column 0 Spans Over Both Rows for the Left Navigation Sidebar Look -->
+        <!-- Left Menu Sidebar Component Pane (Spans over both vertical rows) -->
         <Grid Background="#1E293B" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
-            <StackPanel Margin="20,30,20,0">
-                <TextBlock Text="Syed Public School" Foreground="White" FontSize="20" FontWeight="Bold" Margin="0,0,0,30"/>
-                <Button Content="Admission Board" Background="#334155" Foreground="White" Padding="12" Margin="0,0,0,10" BorderThickness="0" HorizontalContentAlignment="Left" FontWeight="Medium"/>
+            <StackPanel Margin="15,30,15,0">
+                <TextBlock Text="School ERP System" Foreground="White" FontSize="20" FontWeight="Bold" Margin="10,0,0,35"/>
+
+                <!-- Menu Command Execution Links -->
+                <Button Content="🏠 Dashboard Home" Command="{Binding NavigateToWelcomeCommand}" Style="{StaticResource SidebarMenuButtonStyle}"/>
+                <Button Content="📝 New Admission" Command="{Binding NavigateToNewAdmissionCommand}" Style="{StaticResource SidebarMenuButtonStyle}"/>
+                <Button Content="📚 Course Catalog" Style="{StaticResource SidebarMenuButtonStyle}"/>
+                <Button Content="🔍 Student Search" Style="{StaticResource SidebarMenuButtonStyle}"/>
+                <Button Content="📊 Academic Reports" Style="{StaticResource SidebarMenuButtonStyle}"/>
             </StackPanel>
         </Grid>
 
-
-        <!-- Chunk X4: Row 0, Column 1 — Header, Buttons, and DataGrid Map 
-            This component fills Row 0, Column 1. 
-            Because this row is strictly capped inside the main window grid definitions, 
-        the DataGrid is forced to handle overflow by activating its own internal scrollbars natively.xml
-        -->
-        <!-- Row 0, Column 1: Contains the Header, Action Buttons, and Full DataGrid -->
-        <Grid Grid.Row="0" Grid.Column="1" Margin="25,25,25,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <!-- Title Header Row -->
-                <RowDefinition Height="Auto"/>
-                <!-- Utility Button Row -->
-                <RowDefinition Height="*"/>
-                <!-- Fills the remaining room inside Row 0 -->
-            </Grid.RowDefinitions>
-
-            <!-- Title Header Summary Text -->
-            <StackPanel Grid.Row="0" Margin="0,0,0,10">
-                <TextBlock Text="Student Admissions Portal" FontSize="24" FontWeight="Bold" Foreground="#111827"/>
-                <TextBlock Text="Select rows inside the table grid layout below to view or manage applicant profiles." FontSize="12" Foreground="#6B7280"/>
-            </StackPanel>
-
-            <!-- CRUD Utility Actions Toolbar -->
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-                <Button Content="+ Create Blank Application Record" Command="{Binding NewStudentCommand}" Background="#2563EB" Foreground="White" Padding="12,6" FontWeight="Medium" BorderThickness="0" Margin="0,0,10,0"/>
-                <Button Content="🗑 Delete Selected" Command="{Binding DeleteStudentCommand}" Background="#DC2626" Foreground="White" Padding="12,6" FontWeight="Medium" BorderThickness="0"/>
-            </StackPanel>
-
-            <!-- Core Scrollable Data Matrix Component Viewer -->
-            <DataGrid Grid.Row="2" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" 
-                      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                      Background="White" BorderBrush="#E5E7EB" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#E5E7EB"
-                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding StudentID}" Width="50"/>
-                    <DataGridTextColumn Header="Full Applicant Name" Binding="{Binding FullName}" Width="160"/>
-                    <DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="80"/>
-                    <DataGridTextColumn Header="Date of Birth" Binding="{Binding DateOfBirth}" Width="100"/>
-                    <DataGridTextColumn Header="Electronic Email" Binding="{Binding Email}" Width="180"/>
-                    <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNum}" Width="120"/>
-                    <DataGridTextColumn Header="Street Address" Binding="{Binding StreetAddress}" Width="180"/>
-                    <DataGridTextColumn Header="City" Binding="{Binding City}" Width="100"/>
-                    <DataGridTextColumn Header="State / Prov" Binding="{Binding StateProvince}" Width="90"/>
-                    <DataGridTextColumn Header="Postal Code" Binding="{Binding PostalCode}" Width="90"/>
-                    <DataGridTextColumn Header="Previous Institution" Binding="{Binding PrevSchoolName}" Width="160"/>
-                    <DataGridTextColumn Header="GPA" Binding="{Binding Gpa}" Width="60"/>
-                    <DataGridTextColumn Header="Grad Year" Binding="{Binding GraduationYear}" Width="80"/>
-                    <DataGridTextColumn Header="Major ID" Binding="{Binding CourseID}" Width="80"/>
-                    <DataGridTextColumn Header="Application Status" Binding="{Binding ApplicationStatus}" Width="120"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-
-        <!-- Chunk X5: Row 1, Column 1 — Localized Form ScrollViewer and Form Card 
-            This chunk builds Row 1, Column 1. 
-            It restricts the ScrollViewer container exclusively to the bottom right segment, 
-            keeping the form text boxes accessible on compact 14-inch screen resolutions.
-            -->
-        <!-- Row 1, Column 1: Houses ONLY the Data Entry Form Card inside its own Local ScrollViewer -->
-        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="25,15,25,25">
-            <Border Background="White" CornerRadius="6" BorderBrush="#E5E7EB" BorderThickness="1" Padding="15">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Text="Student Profile Form Properties Editor" Grid.Row="0" FontSize="15" FontWeight="Bold" Foreground="#1F2937" Margin="0,0,0,10"/>
-
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Chunk X6: Form Inputs Column 1 (Personal Data Mapping) 
-                        This block builds out the first field column layout map for 
-                        the data entry form card sheet, binding name, gender, birthday, 
-                        email, and phone info fields.
-                        -->
-                        <!-- FORM COLUMN 1: Personal Identification Fields -->
-                        <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                            <TextBlock Text="Full Legal Name" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.FullName, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="e.g. Johnathan Doe"/>
-
-                            <TextBlock Text="Gender" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.Gender, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="Male, Female, or Other"/>
-
-                            <TextBlock Text="Date Of Birth" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.DateOfBirth, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="YYYY-MM-DD (e.g. 2005-04-12)"/>
-
-                            <TextBlock Text="Primary Email Address" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.Email, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="name@example.com"/>
-
-                            <TextBlock Text="Contact Phone Number" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.PhoneNum, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="555-0199 or +1-555-0199"/>
-                        </StackPanel>
-
-
-                        <!-- Chunk X7: Form Inputs Column 2 (Address Mapping and Course Dropdown) 
-                        This segment draws the middle text fields panel area along with the 
-                        dynamic data-bound course master lookup dropdown menu.
-                        -->
-                        <!-- FORM COLUMN 2: Mailing Address Information & Major Dropdown Selection -->
-                        <StackPanel Grid.Column="1" Margin="0,0,15,0">
-                            <TextBlock Text="Street Address" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.StreetAddress, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="e.g. 123 Maple Avenue"/>
-
-                            <TextBlock Text="City" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.City, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="e.g. Seattle"/>
-
-                            <TextBlock Text="State / Province" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.StateProvince, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="e.g. WA"/>
-
-                            <TextBlock Text="Postal / ZIP Code" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.PostalCode, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="e.g. 98101"/>
-
-                            <!-- THE DYNAMIC COURSE COMBOBOX DROPDOWN CONTROL -->
-                            <TextBlock Text="Assigned Academic Major" FontWeight="Medium" Margin="0,0,0,4" Foreground="#2563EB"/>
-                            <ComboBox ItemsSource="{Binding Courses}" DisplayMemberPath="CourseName" SelectedValuePath="CourseID" 
-                                      SelectedValue="{Binding SelectedStudent.CourseID, UpdateSourceTrigger=PropertyChanged}"/>
-                        </StackPanel>
-                        <!-- Chunk X8: Form Inputs Column 3, Actions Buttons, and Document End
-                        This final block completes the rightmost layout layer containing 
-                        school history data entry text boxes and the system action processing button items.
-                        -->
-                        <!-- FORM COLUMN 3: Academic Background & Control Operation Actions Buttons -->
-                        <StackPanel Grid.Column="2" VerticalAlignment="Stretch">
-                            <TextBlock Text="Previous School Name" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.PrevSchoolName, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="e.g. West High School"/>
-
-                            <TextBlock Text="Cumulative Graduation GPA" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.Gpa, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="0.00 to 4.00"/>
-
-                            <TextBlock Text="High School Graduation Year" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.GraduationYear, UpdateSourceTrigger=PropertyChanged}" h:WatermarkService.Watermark="e.g. 2024"/>
-
-                            <TextBlock Text="Application Profile Status" FontWeight="Medium" Margin="0,0,0,4" Foreground="#4B5563"/>
-                            <TextBox Text="{Binding SelectedStudent.ApplicationStatus}" IsReadOnly="True" Background="#F3F4F6"/>
-
-                            <!-- Master Action Pipeline Save/Approve Buttons -->
-                            <!-- Styled Apply General Value Updates Button Component -->
-                            <Button Content="💾 Save a New Record or Updates an Existing Record" Command="{Binding SaveStudentChangesCommand}" Padding="10,6" Margin="0,5,0,15" FontWeight="Medium" BorderThickness="0">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Background" Value="#4B5563"/>
-                                        <Setter Property="Foreground" Value="White"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsEnabled" Value="False">
-                                                <Setter Property="Background" Value="#E5E7EB"/>
-                                                <Setter Property="Foreground" Value="#9CA3AF"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                            <!-- Workflow Status Header Divider Label -->
-                            <TextBlock Text="Change Application Status Workflow" 
-                                       FontWeight="Medium" FontSize="11" Margin="0,5,0,5" Foreground="#6B7280"/>
-
-                            <UniformGrid Columns="2">
-                                <!-- Styled Reject File Button Component -->
-                                <Button Content="Reject Status" Command="{Binding RejectCommand}" Padding="10,6" BorderThickness="0" Margin="0,0,5,0" FontWeight="Medium">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="Background" Value="#EF4444"/>
-                                            <Setter Property="Foreground" Value="White"/>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsEnabled" Value="False">
-                                                    <Setter Property="Background" Value="#E5E7EB"/>
-                                                    <Setter Property="Foreground" Value="#9CA3AF"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                                <!-- Styled Approve Entry Button Component -->
-                                <Button Content="Approve Status" Command="{Binding ApproveCommand}" Padding="10,6" BorderThickness="0" FontWeight="Medium">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="Background" Value="#10B981"/>
-                                            <Setter Property="Foreground" Value="White"/>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsEnabled" Value="False">
-                                                    <Setter Property="Background" Value="#E5E7EB"/>
-                                                    <Setter Property="Foreground" Value="#9CA3AF"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                            </UniformGrid>
-
-                        </StackPanel>
-                    </Grid>
-                    <!-- Closes 3-Column Input Form Sub-Grid -->
-                </Grid>
-                <!-- Closes Card Panel Inner Grid -->
-            </Border>
-            <!-- Closes White Card Form Canvas Border Panel -->
-        </ScrollViewer>
-        <!-- Closes Localized Form ScrollViewer Layer Container -->
+        <!-- Main Screen Workspace Content Viewport (Row 0 & 1, Column 1) -->
+        <!-- ContentControl dynamically renders whichever view model class layer is currently active -->
+        <ContentControl Content="{Binding CurrentView}" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>
-    <!-- Closes Outer Root Window Layout Grid Control Framework Matrix -->
 </Window>
