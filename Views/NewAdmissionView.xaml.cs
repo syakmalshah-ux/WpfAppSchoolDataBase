@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,39 +12,35 @@ namespace WpfAppSchoolDataBase.Views
             InitializeComponent();
         }
 
-        // ==========================================
-        // LAYER 1: KEYSTROKE PREVIEW INTERCEPTORS (0-9, A-Z, etc)
-        // ==========================================
-
-        // Allows ONLY Alphabetic Letters and Spaces (Name Field)
+        // Intercepts and allows ONLY Alphabetic Letters and Spaces (Name Field)
         private void AlphabeticTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex(@"^[a-zA-A-Za-z ]+$");
+            Regex regex = new Regex(@"^[a-zA-Z ]+$");
             e.Handled = !regex.IsMatch(e.Text);
         }
 
-        // Allows Letters, Numbers, and Spaces (Address, City, Province, School)
+        // Intercepts and allows Letters, Numbers, Spaces, and Punctuation for Real Addresses
         private void AlphanumericTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex(@"^[a-zA-Z0-9 ]+$");
+            Regex regex = new Regex(@"^[a-zA-Z0-9 .,\-/]+$");
             e.Handled = !regex.IsMatch(e.Text);
         }
 
-        // Allows Integer Digits (0-9) Only (Year, Postal Code)
+        // Intercepts and allows Integer Digits (0-9) Only (Year, Postal Code)
         private void IntegerTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex(@"^[0-9]+$");
             e.Handled = !regex.IsMatch(e.Text);
         }
 
-        // Allows Email Valid Construction Elements
+        // Intercepts and allows valid email characters
         private void EmailTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex(@"^[a-zA-Z0-9.@_\-]+$");
             e.Handled = !regex.IsMatch(e.Text);
         }
 
-        // Allows Telephone Valid Construction Elements
+        // Intercepts and allows standard phone number layout characters
         private void PhoneTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex(@"^[0-9()\-+ ]+$");
@@ -53,12 +48,11 @@ namespace WpfAppSchoolDataBase.Views
         }
 
         // Strict Masked GPA Bounds Controller (0.00 - 4.00)
-        private void GpaTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void GPATextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (sender is TextBox textBox)
             {
                 string fullProposedText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-
                 if (fullProposedText.Length > 4) { e.Handled = true; return; }
 
                 Regex structureRegex = new Regex(@"^[0-9]?\.?[0-9]{0,2}$");
@@ -71,17 +65,12 @@ namespace WpfAppSchoolDataBase.Views
             }
         }
 
-        // ==========================================
-        // LAYER 2: LOSS OF FOCUS STRING FORMAT CLEANERS
-        // ==========================================
-
-        // Clean double spaces and edge spaces for alphabetic and alphanumeric text boxes
+        // Automatically cleans up leading/trailing gaps and accidental double spaces
         private void TextClean_LostFocus(object sender, RoutedEventArgs e)
         {
             if (sender is TextBox textBox)
             {
                 string text = textBox.Text.Trim();
-                // Replace double spaces with single space using Regex string replace manipulation
                 text = Regex.Replace(text, @"\s+", " ");
                 textBox.Text = text;
             }

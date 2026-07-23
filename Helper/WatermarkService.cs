@@ -2,7 +2,7 @@
 
 namespace WpfAppSchoolDataBase.Helper
 {
-    internal class WatermarkService
+    public class WatermarkService
     {
         public static readonly DependencyProperty WatermarkProperty =
             DependencyProperty.RegisterAttached("Watermark", typeof(string), typeof(WatermarkService), new PropertyMetadata(default(string)));

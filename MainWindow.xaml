@@ -16,8 +16,7 @@
         Title="SYED Public School ERP System"
         Background="#F3F4F6" WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
-        WindowState="Maximized" 
-        ResizeMode="NoResize">
+        WindowState="Maximized">
 
     <Window.DataContext>
         <vm:MainViewModel />
@@ -30,7 +29,10 @@
         <DataTemplate DataType="{x:Type vm:NewAdmissionViewModel}">
             <v:NewAdmissionView />
         </DataTemplate>
-
+        <DataTemplate DataType="{x:Type vm:CourseEntriesViewModel}">
+            <v:CourseEntriesView />
+        </DataTemplate>
+        
         <!-- Standard Button Visual Styling Scheme Rules -->
         <Style x:Key="SidebarMenuButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -72,7 +74,7 @@
                 <!-- Menu Command Execution Links -->
                 <Button Content="🏠 Dashboard Home" Command="{Binding NavigateToWelcomeCommand}" Style="{StaticResource SidebarMenuButtonStyle}"/>
                 <Button Content="📝 New Admission" Command="{Binding NavigateToNewAdmissionCommand}" Style="{StaticResource SidebarMenuButtonStyle}"/>
-                <Button Content="📚 Course Catalog" Style="{StaticResource SidebarMenuButtonStyle}"/>
+                <Button Content="📚 Course Catalog" Command="{Binding NavigateToCourseEntriesCommand}"  Style="{StaticResource SidebarMenuButtonStyle}"/>
                 <Button Content="🔍 Student Search" Style="{StaticResource SidebarMenuButtonStyle}"/>
                 <Button Content="📊 Academic Reports" Style="{StaticResource SidebarMenuButtonStyle}"/>
             </StackPanel>

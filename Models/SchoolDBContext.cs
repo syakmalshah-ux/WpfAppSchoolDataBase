@@ -95,8 +95,8 @@ public partial class SchoolDBContext : DbContext
                 .HasConstraintName("FK_Student_Course");
         });
 
-        OnModelCreatingPartial(modelBuilder);
+        OnModelCreatinGPArtial(modelBuilder);
     }
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    partial void OnModelCreatinGPArtial(ModelBuilder modelBuilder);
 }

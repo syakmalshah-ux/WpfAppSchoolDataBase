@@ -46,6 +46,12 @@ namespace WpfAppSchoolDataBase.ViewModels
             CurrentView = new NewAdmissionViewModel(GetDbOptions());
         }
 
+        [RelayCommand]
+        private void NavigateToCourseEntries()
+        {
+            // Dynamically injects Course Enries View down to the sub-panel view model
+            CurrentView = new CourseEntriesViewModel(GetDbOptions());
+        }
         // Note: Keep your existing database collection tracking arrays and 
         // options context logic beneath this block
 
