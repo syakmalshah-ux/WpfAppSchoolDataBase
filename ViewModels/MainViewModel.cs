@@ -52,6 +52,11 @@ namespace WpfAppSchoolDataBase.ViewModels
             // Dynamically injects Course Enries View down to the sub-panel view model
             CurrentView = new CourseEntriesViewModel(GetDbOptions());
         }
+        [RelayCommand]
+        private void NavigateToAdvancedSearch()
+        {
+            CurrentView = new AdvancedSearchViewModel();
+        }
         // Note: Keep your existing database collection tracking arrays and 
         // options context logic beneath this block
 

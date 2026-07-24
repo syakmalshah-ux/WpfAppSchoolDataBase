@@ -32,7 +32,10 @@
         <DataTemplate DataType="{x:Type vm:CourseEntriesViewModel}">
             <v:CourseEntriesView />
         </DataTemplate>
-        
+        <!-- ADD THIS DATA TEMPLATE -->
+        <DataTemplate DataType="{x:Type vm:AdvancedSearchViewModel}">
+            <v:AdvancedSearchView />
+        </DataTemplate>
         <!-- Standard Button Visual Styling Scheme Rules -->
         <Style x:Key="SidebarMenuButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -75,7 +78,7 @@
                 <Button Content="🏠 Dashboard Home" Command="{Binding NavigateToWelcomeCommand}" Style="{StaticResource SidebarMenuButtonStyle}"/>
                 <Button Content="📝 New Admission" Command="{Binding NavigateToNewAdmissionCommand}" Style="{StaticResource SidebarMenuButtonStyle}"/>
                 <Button Content="📚 Course Catalog" Command="{Binding NavigateToCourseEntriesCommand}"  Style="{StaticResource SidebarMenuButtonStyle}"/>
-                <Button Content="🔍 Student Search" Style="{StaticResource SidebarMenuButtonStyle}"/>
+                <Button Content="🔍 Student Search" Command="{Binding NavigateToAdvancedSearchCommand}" Style="{StaticResource SidebarMenuButtonStyle}"/>
                 <Button Content="📊 Academic Reports" Style="{StaticResource SidebarMenuButtonStyle}"/>
             </StackPanel>
         </Grid>

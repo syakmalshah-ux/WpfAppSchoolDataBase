@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WpfAppSchoolDataBase.Models;
 
@@ -40,4 +41,33 @@ public partial class StudentAdmission
     public string ApplicationStatus { get; set; }
 
     public virtual Course Course { get; set; }
+
+    // ==================== ADDED WRAPPER PROPERTIES ====================
+
+    // DateTime? Wrapper for WPF DatePicker binding
+    [NotMapped] // Tells EF Core NOT to look for this column in SQL Server
+    public DateTime? DateOfBirthDateTime
+    {
+        get => DateOfBirth.ToDateTime(TimeOnly.MinValue);
+        set
+        {
+            if (value.HasValue)
+            {
+                DateOfBirth = DateOnly.FromDateTime(value.Value);
+            }
+        }
+    }
+
+    [NotMapped] // Tells EF Core NOT to look for this column in SQL Server
+    public DateTime? AdmissionDateDateTime
+    {
+        get => AdmissionDate.ToDateTime(TimeOnly.MinValue);
+        set
+        {
+            if (value.HasValue)
+            {
+                AdmissionDate = DateOnly.FromDateTime(value.Value);
+            }
+        }
+    }
 }
